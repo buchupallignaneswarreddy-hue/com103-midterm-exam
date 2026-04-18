@@ -1,0 +1,90 @@
+# Expense Tracker Program
+
+# Hardcoded categories
+categories = {
+    1: "Food & Drinks",
+    2: "Transportation",
+    3: "Mobile / Internet",
+    4: "School Supplies",
+    5: "Entertainment"
+}
+
+# Sample descriptions for display
+examples = {
+    1: "Lunch, snacks, coffee",
+    2: "Bus, jeepney, ride-share",
+    3: "Load, data plan, WiFi top-up",
+    4: "Notebook, pen, bond paper",
+    5: "Games, movies, hangout"
+}
+
+# 1. Ask for student info
+name = input("Enter student name: ")
+budget = float(input("Enter weekly budget: "))
+
+# 2. Display categories
+print("\nWEEKLY EXPENSE -- CATEGORIES")
+for i in categories:
+    print(f"{i}. {categories[i]} (e.g. {examples[i]})")
+
+expenses = []
+total_spent = 0
+
+# 3. Accept 4 expense entries
+for i in range(1, 5):
+    print(f"\n--- EXPENSE {i} ---")
+    cat_num = int(input("Category (0 to skip): "))
+
+    if cat_num == 0:
+        print("Skipped.")
+        continue
+
+    if cat_num in categories:
+        description = input("Description: ")
+        amount = float(input("Amount: "))
+
+        # 5. Check if high expense (>25%)
+        high_flag = ""
+        if amount > 0.25 * budget:
+            high_flag = "!! High Expense Alert !!"
+
+        expenses.append({
+            "category": categories[cat_num],
+            "description": description,
+            "amount": amount,
+            "flag": high_flag
+        })
+
+        total_spent += amount
+    else:
+        print("Invalid category. Skipped.")
+
+# 6. Compute totals
+remaining = budget - total_spent
+
+if remaining >= 0:
+    status = "Budget OK! Keep it up."
+else:
+    status = "Overspent! Reduce spending."
+
+# 7. Print formatted report
+print("\n" + "="*50)
+print(f"{name.upper()} - WEEKLY EXPENSE LOG")
+print("="*50)
+print(f"Weekly Budget : P{budget:.2f}\n")
+
+for i, exp in enumerate(expenses, start=1):
+    print(f"[{i}] {exp['category']}")
+    print(f"    {exp['description']} - P{exp['amount']:.2f}", end="")
+    if exp["flag"]:
+        print(f"  {exp['flag']}")
+    else:
+        print()
+
+print("-"*50)
+print(f"Total Spent : P{total_spent:.2f}")
+print(f"Remaining   : P{remaining:.2f}")
+print(f"Status      : {status}")
+print("="*50)
+
+ 
